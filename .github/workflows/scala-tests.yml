@@ -1,0 +1,27 @@
+name: Test CI Trigger
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: sbt        # caches ivy2 & sbt artifacts
+
+      - name: Setup sbt
+        uses: sbt/setup-sbt@v1
+
+      - name: Run tests
+        run: sbt test
