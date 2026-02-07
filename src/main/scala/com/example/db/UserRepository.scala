@@ -23,6 +23,14 @@ object UserRepository {
       WHERE id = $id
     """.query[User].option
 
+  def findByEmail(email: String): ConnectionIO[Option[User]] =
+    sql"""
+      SELECT id, email, created_at
+      FROM users
+      WHERE email = $email
+    """.query[User].option
+
+  
   def findAll: ConnectionIO[List[User]] =
     sql"""
       SELECT id, email, created_at

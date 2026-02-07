@@ -1,7 +1,7 @@
 package com.example.db
 
 import cats.effect.IO
-import com.example.PgIntegrationTest
+import com.example.integration.PgIntegrationTest
 import doobie.implicits.toConnectionIOOps
 
 class UserRepositoryTest extends PgIntegrationTest {
@@ -13,7 +13,7 @@ class UserRepositoryTest extends PgIntegrationTest {
       id <- insert("test@test.com").transact(xa)
       userOpt <- findById(id).transact(xa)
     } yield {
-      userOpt.isDefined shouldBe true
+      val _ = userOpt.isDefined shouldBe true
       userOpt.get.email shouldBe "test@test.com"
     }
   }
