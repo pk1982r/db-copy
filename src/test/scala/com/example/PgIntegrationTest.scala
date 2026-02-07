@@ -7,6 +7,7 @@ import com.dimafeng.testcontainers.scalatest.TestContainersForAll
 import com.example.db.Database
 import doobie.hikari.HikariTransactor
 import org.flywaydb.core.Flyway
+import org.scalatest.Assertion
 import org.scalatest.freespec.AsyncFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -25,6 +26,8 @@ trait PgIntegrationTest extends AsyncFreeSpec with AsyncIOSpec with TestContaine
 
   val container: PostgreSQLContainer = startContainers()
   val xar: Resource[IO, HikariTransactor[IO]] = getTransactor(container)
+  
+  def withDatabase(pgTest: HikariTransactor[IO] => IO[Assertion]): IO[Assertion] = xar.use(pgTest)
 }
 
 

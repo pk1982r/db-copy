@@ -8,18 +8,14 @@ class UserRepositoryTest extends PgIntegrationTest {
 
   import UserRepository.*
 
-  "it should read file" in {
-    val io =
-      for {
-        xa <- xar
-        id <- insert("test@test.com").transact(xa).toResource
-        user <- findById(id).transact(xa).toResource
-      } yield user
-
-    io.asserting { userOpt =>
+  "it should read file" in withDatabase { xa =>
+    for {
+      id <- insert("test@test.com").transact(xa)
+      userOpt <- findById(id).transact(xa)
+    } yield {
       userOpt.isDefined shouldBe true
       userOpt.get.email shouldBe "test@test.com"
-    }.use(_ => IO.unit)
+    }
   }
 
 }
