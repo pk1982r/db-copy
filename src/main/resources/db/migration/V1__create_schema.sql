@@ -1,5 +1,7 @@
-CREATE TABLE users (
-                       id          BIGSERIAL PRIMARY KEY,
-                       email       TEXT NOT NULL UNIQUE,
-                       created_at  TIMESTAMP NOT NULL DEFAULT now()
+CREATE TABLE users
+(
+    id          BIGSERIAL PRIMARY KEY,
+    external_id TEXT      NOT NULL UNIQUE,
+    email       TEXT      NOT NULL UNIQUE,
+    created_at  TIMESTAMP NOT NULL DEFAULT now()
 )

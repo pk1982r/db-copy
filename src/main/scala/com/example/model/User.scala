@@ -3,7 +3,7 @@ package com.example.model
 import java.time.Instant
 
 final case class User(
-                       id: Long,
+                       externalId: String,
                        email: String,
                        createdAt: Instant
                      )
