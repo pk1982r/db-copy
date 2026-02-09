@@ -1,13 +1,4 @@
-# interview bootstrap
+# Database copy
 
-An example application built from the [ce3.g8 template](https://github.com/typelevel/ce3.g8).
-
-## Run application
-Stage using sbt-native-packager
-```shell
-sbt stage
-```
-Go to the stage directory
-```shell
-cd target/universal/stage
-```
+The purpose of the project is to demonstrate a test harness for programmatic testing of the database copy script.  
+The script has been vibecoded, the rest is human-created (or human-supported by AI, where the code is human-inspected).  
