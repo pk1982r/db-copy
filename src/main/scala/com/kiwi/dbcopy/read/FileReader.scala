@@ -1,4 +1,4 @@
-package com.example.read
+package com.kiwi.dbcopy.read
 
 import cats.effect.{IO, Resource}
 import fs2.io.readInputStream

@@ -1,4 +1,4 @@
-package com.example.integration
+package com.kiwi.dbcopy.integration
 
 import cats.effect.testing.scalatest.AsyncIOSpec
 import cats.effect.{IO, Resource}
@@ -6,8 +6,8 @@ import cats.implicits.catsSyntaxTuple2Semigroupal
 import com.dimafeng.testcontainers.PostgreSQLContainer
 import com.dimafeng.testcontainers.lifecycle.and
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll
-import com.example.copy.PostgresCopyApp.DbConfig
-import com.example.db.Database
+import com.kiwi.dbcopy.copy.PostgresCopyApp.DbConfig
+import com.kiwi.dbcopy.db.Database
 import doobie.hikari.HikariTransactor
 import org.scalatest.Assertion
 import org.scalatest.freespec.AsyncFreeSpec
@@ -54,8 +54,6 @@ trait TwoPgIntegrationTest
                      test: IntegrationDbConfig => IO[Assertion]
                    ): IO[Assertion] =
     withContainers { case pgContainerA and pgContainerB =>
-      configFromContainer(pgContainerA)
-
       (transactor(pgContainerA), transactor(pgContainerB))
         .tupled
         .use { case (xa, xb) => test(IntegrationDbConfig(

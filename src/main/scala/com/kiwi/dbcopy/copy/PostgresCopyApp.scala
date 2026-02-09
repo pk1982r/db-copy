@@ -1,4 +1,4 @@
-package com.example.copy
+package com.kiwi.dbcopy.copy
 
 import cats.effect.*
 import cats.effect.std.Console

@@ -1,4 +1,4 @@
-package com.example
+package com.kiwi.dbcopy
 
 import cats.implicits.*
 import doobie.*

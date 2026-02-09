@@ -1,7 +1,7 @@
-package com.example.db
+package com.kiwi.dbcopy.db
 
 import cats.implicits.*
-import com.example.model.User
+import com.kiwi.dbcopy.model.User
 import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*

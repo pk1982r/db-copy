@@ -1,4 +1,4 @@
-package com.example
+package com.kiwi.dbcopy
 
 import com.dimafeng.testcontainers.lifecycle.and
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll

@@ -11,7 +11,7 @@ ThisBuild / tpolecatDefaultOptionsMode := VerboseMode
 val testcontainersVersion = "0.44.0"
 
 lazy val root = (project in file(".")).settings(
-  name := "interview",
+  name := "db-copy",
   libraryDependencies ++= Seq(
     // "core" module - IO, IOApp, schedulers
     // This pulls in the kernel and std modules automatically.

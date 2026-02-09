@@ -1,10 +1,10 @@
-package com.example.integration
+package com.kiwi.dbcopy.integration
 
 import cats.effect.testing.scalatest.AsyncIOSpec
 import cats.effect.{IO, Resource}
 import com.dimafeng.testcontainers.PostgreSQLContainer
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll
-import com.example.db.Database
+import com.kiwi.dbcopy.db.Database
 import doobie.hikari.HikariTransactor
 import org.scalatest.Assertion
 import org.scalatest.freespec.AsyncFreeSpec

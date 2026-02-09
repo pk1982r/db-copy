@@ -1,4 +1,4 @@
-package com.example.model
+package com.kiwi.dbcopy.model
 
 import java.time.Instant
 

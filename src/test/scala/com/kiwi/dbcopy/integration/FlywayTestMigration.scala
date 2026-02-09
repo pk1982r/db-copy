@@ -1,4 +1,4 @@
-package com.example.integration
+package com.kiwi.dbcopy.integration
 
 import com.dimafeng.testcontainers.PostgreSQLContainer
 import org.flywaydb.core.Flyway

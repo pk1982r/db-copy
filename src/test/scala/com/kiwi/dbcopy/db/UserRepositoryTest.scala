@@ -1,16 +1,16 @@
-package com.example.db
+package com.kiwi.dbcopy.db
 
 import cats.effect.IO
-import com.example.{TestUserRepository, userFromId}
-import com.example.integration.PgIntegrationTest
-import com.example.model.User
+import com.kiwi.dbcopy.integration.PgIntegrationTest
+import com.kiwi.dbcopy.model.User
+import com.kiwi.dbcopy.{TestUserRepository, userFromId}
 import doobie.implicits.toConnectionIOOps
 
 import java.time.Instant
 
 class UserRepositoryTest extends PgIntegrationTest {
 
-  import UserRepository.*
+  import com.kiwi.dbcopy.db.UserRepository.*
 
   "it should read file" in withTransactor { xa =>
     for {
