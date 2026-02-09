@@ -23,7 +23,7 @@ trait PgIntegrationTest extends AsyncFreeSpec with AsyncIOSpec with TestContaine
 
   private def getTransactor(container: PostgreSQLContainer): Resource[IO, HikariTransactor[IO]] = Database.transactor(container.jdbcUrl, container.username, container.password)
 
-  def withDatabase(pgTest: HikariTransactor[IO] => IO[Assertion]): IO[Assertion] =
+  def withTransactor(pgTest: HikariTransactor[IO] => IO[Assertion]): IO[Assertion] =
     withContainers { c =>
       getTransactor(c).use(pgTest)
     }

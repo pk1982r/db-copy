@@ -1,7 +1,7 @@
 package com.example.db
 
 import cats.effect.IO
-import com.example.TestUserRepository
+import com.example.{TestUserRepository, userFromId}
 import com.example.integration.PgIntegrationTest
 import com.example.model.User
 import doobie.implicits.toConnectionIOOps
@@ -12,7 +12,7 @@ class UserRepositoryTest extends PgIntegrationTest {
 
   import UserRepository.*
 
-  "it should read file" in withDatabase { xa =>
+  "it should read file" in withTransactor { xa =>
     for {
       id <- insert(User("1L", "test@test.com", Instant.now())).transact(xa)
       userOpt <- findById(id).transact(xa)
@@ -22,8 +22,8 @@ class UserRepositoryTest extends PgIntegrationTest {
     }
   }
 
-  "it should create many users" in withDatabase { xa =>
-    val users = List.tabulate(1000)(i => i.userFromId)
+  "it should create many users" in withTransactor { xa =>
+    val users = List.tabulate(1000)(_.userFromId)
     val users2 = List.tabulate(1000)(i => (1000 + i).userFromId)
 
     for {
@@ -33,11 +33,5 @@ class UserRepositoryTest extends PgIntegrationTest {
       numberOfUsers <- TestUserRepository.count.transact(xa)
     } yield numberOfUsers shouldBe 2000
 
-  }
-
-  extension (i: Int) {
-    def userFromId: User = {
-      User(s"$i", s"test$i@dot.com", Instant.now())
-    }
   }
 }

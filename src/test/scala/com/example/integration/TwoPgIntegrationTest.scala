@@ -6,6 +6,7 @@ import cats.implicits.catsSyntaxTuple2Semigroupal
 import com.dimafeng.testcontainers.PostgreSQLContainer
 import com.dimafeng.testcontainers.lifecycle.and
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll
+import com.example.copy.PostgresCopyApp.DbConfig
 import com.example.db.Database
 import doobie.hikari.HikariTransactor
 import org.scalatest.Assertion
@@ -36,12 +37,42 @@ trait TwoPgIntegrationTest
                         ): Resource[IO, HikariTransactor[IO]] =
     Database.transactor(c.jdbcUrl, c.username, c.password)
 
-  def withDatabase(
-                    test: (HikariTransactor[IO], HikariTransactor[IO]) => IO[Assertion]
-                  ): IO[Assertion] =
+  def withTransactors(
+                       test: (HikariTransactor[IO], HikariTransactor[IO]) => IO[Assertion]
+                     ): IO[Assertion] =
     withContainers { case a and b =>
       (transactor(a), transactor(b))
         .tupled
         .use { case (xa, xb) => test(xa, xb) }
     }
+
+  case class IntegrationDb(config: DbConfig, transactor: HikariTransactor[IO])
+
+  case class IntegrationDbConfig(dbA: IntegrationDb, dbB: IntegrationDb)
+
+  def withDatabases(
+                     test: IntegrationDbConfig => IO[Assertion]
+                   ): IO[Assertion] =
+    withContainers { case pgContainerA and pgContainerB =>
+      configFromContainer(pgContainerA)
+
+      (transactor(pgContainerA), transactor(pgContainerB))
+        .tupled
+        .use { case (xa, xb) => test(IntegrationDbConfig(
+          IntegrationDb(configFromContainer(pgContainerA), xa),
+          IntegrationDb(configFromContainer(pgContainerB), xb),
+        ))
+        }
+    }
+
+  private def configFromContainer(pgContainerA: PostgreSQLContainer): DbConfig =
+    DbConfig(
+      host = pgContainerA.host,
+      port = pgContainerA.mappedPort(5432),
+      database = pgContainerA.databaseName,
+      user = pgContainerA.username,
+      password = pgContainerA.password,
+      schema = "public"
+    )
+
 }

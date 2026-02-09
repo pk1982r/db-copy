@@ -96,7 +96,7 @@ object PostgresCopyApp extends IOApp.Simple {
       sourceQuery <- IO(sys.env("SOURCE_QUERY"))
       targetTable <- IO(sys.env("TARGET_TABLE"))
       targetColumnsStr <- IO(sys.env.get("TARGET_COLUMNS"))
-      targetColumns = targetColumnsStr.map(_.split(",").map(_.trim).toList)
+      targetColumns = targetColumnsStr.map(_.split(",").map(_.trim).toList) // TODO study this
       batchSize <- IO(sys.env.getOrElse("BATCH_SIZE", "1000").toInt)
       throttleDelayMs <- IO(sys.env.getOrElse("THROTTLE_DELAY_MS", "0").toLong)
     } yield CopyConfig(sourceQuery, targetTable, targetColumns, batchSize, throttleDelayMs.millis)
