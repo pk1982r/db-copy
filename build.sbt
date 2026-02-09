@@ -28,6 +28,16 @@ lazy val root = (project in file(".")).settings(
     // Logging
     "ch.qos.logback" % "logback-classic" % "1.5.27",
 
+    // DB
+    "org.flywaydb" % "flyway-core" % "11.20.3",
+    "org.flywaydb" % "flyway-database-postgresql" % "11.20.3",
+    "org.postgresql" % "postgresql" % "42.7.9",
+
+    // Doobie
+    "org.tpolecat" %% "doobie-core"      % "1.0.0-RC11",
+    "org.tpolecat" %% "doobie-postgres"  % "1.0.0-RC11",
+    "org.tpolecat" %% "doobie-hikari"    % "1.0.0-RC11",
+
     // Test
     "org.scalamock" %% "scalamock" % "7.5.3",
     "com.dimafeng" %% "testcontainers-scala-scalatest" % testcontainersVersion % Test,
