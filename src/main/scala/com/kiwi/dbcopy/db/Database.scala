@@ -1,4 +1,4 @@
-package com.example.db
+package com.kiwi.dbcopy.db
 
 import cats.effect.{IO, Resource}
 import doobie.hikari.HikariTransactor

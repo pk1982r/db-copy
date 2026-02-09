@@ -1,10 +1,10 @@
-package com
+package com.kiwi
 
-import com.example.model.User
+import com.kiwi.dbcopy.model.User
 
 import java.time.Instant
 
-package object example {
+package object dbcopy {
 
   extension (i: Int) {
     def userFromId: User = {

@@ -1,10 +1,10 @@
-package com.example.copy
+package com.kiwi.dbcopy.copy
 
-import com.example.copy.PostgresCopyApp.CopyConfig
-import com.example.db.UserRepository
-import com.example.integration.TwoPgIntegrationTest
-import com.example.model.User
-import com.example.{TestUserRepository, userFromId}
+import com.kiwi.dbcopy.copy.PostgresCopyApp.CopyConfig
+import com.kiwi.dbcopy.db.UserRepository
+import com.kiwi.dbcopy.integration.TwoPgIntegrationTest
+import com.kiwi.dbcopy.model.User
+import com.kiwi.dbcopy.{TestUserRepository, userFromId}
 import doobie.implicits.toConnectionIOOps
 
 import java.time.Instant

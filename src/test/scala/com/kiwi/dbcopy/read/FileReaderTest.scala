@@ -1,4 +1,4 @@
-package com.example.read
+package com.kiwi.dbcopy.read
 
 import cats.effect.IO
 import cats.effect.testing.scalatest.AsyncIOSpec

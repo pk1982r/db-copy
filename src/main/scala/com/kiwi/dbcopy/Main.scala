@@ -1,4 +1,4 @@
-package com.example
+package com.kiwi.dbcopy
 
 import cats.effect.{IO, IOApp}
 
