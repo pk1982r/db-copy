@@ -12,6 +12,7 @@ import scala.concurrent.duration.DurationInt
 
 class PostgresCopyAppTest extends TwoPgIntegrationTest {
 
+  import Fixture.*
   import UserRepository.*
 
   "it should have two separate DBs" in withTransactors { (xa, xb) =>
@@ -38,8 +39,6 @@ class PostgresCopyAppTest extends TwoPgIntegrationTest {
       userBinB.get.email shouldBe emailBUser.email
     }
   }
-
-  private val copyConfig = CopyConfig("SELECT * FROM users", "users", None, 1000, 1000.millis)
 
   "it should copy using the script - nothing to copy" in withDatabases { dbs =>
     for {
@@ -70,4 +69,33 @@ class PostgresCopyAppTest extends TwoPgIntegrationTest {
       numberOfUsersB shouldBe numberOfUsers
     }
   }
+
+  "is should copy to the same DB" in withDatabases { dbs =>
+    val numberOfUsers = 1000
+    for {
+      _ <- TestUserRepository.truncate.transact(dbs.dbA.transactor)
+      _ <- TestUserRepository.truncateBackup.transact(dbs.dbA.transactor)
+      _ <- TestUserRepository.truncate.transact(dbs.dbB.transactor)
+      _ <- TestUserRepository.truncateBackup.transact(dbs.dbB.transactor)
+      users = List.tabulate(numberOfUsers)(_.userFromId)
+      _ <- insertBatch_(users).transact(dbs.dbA.transactor)
+      copied <- PostgresCopyApp.performCopy(copyConfigBackup, dbs.dbA.config, dbs.dbA.config)
+      numberOfUsersA <- TestUserRepository.count.transact(dbs.dbA.transactor)
+      numberOfUsersBackupA <- TestUserRepository.countBackup.transact(dbs.dbA.transactor)
+      numberOfUsersB <- TestUserRepository.count.transact(dbs.dbB.transactor)
+      numberOfUsersBackupB <- TestUserRepository.countBackup.transact(dbs.dbB.transactor)
+    } yield {
+      val _ = copied shouldBe numberOfUsers
+      val _ = numberOfUsersA shouldBe numberOfUsers
+      val _ = numberOfUsersB shouldBe 0
+      val _ = numberOfUsersBackupA shouldBe numberOfUsers
+      numberOfUsersBackupB shouldBe 0
+    }
+  }
+
+  object Fixture {
+    val copyConfig: CopyConfig = CopyConfig("SELECT * FROM users", "users", None, 1000, 1000.millis)
+    val copyConfigBackup: CopyConfig = CopyConfig("SELECT * FROM users", "users_backup", None, 1000, 1000.millis)
+  }
+
 }

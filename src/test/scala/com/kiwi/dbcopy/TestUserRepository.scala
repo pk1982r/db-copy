@@ -13,9 +13,20 @@ object TestUserRepository {
       .run
       .void
 
+  def truncateBackup: ConnectionIO[Unit] =
+    sql"TRUNCATE TABLE users_backup RESTART IDENTITY CASCADE"
+      .update
+      .run
+      .void
+
   /** Count number of users */
   def count: ConnectionIO[Long] =
     sql"SELECT COUNT(*) FROM users"
+      .query[Long]
+      .unique
+
+  def countBackup: ConnectionIO[Long] =
+    sql"SELECT COUNT(*) FROM users_backup"
       .query[Long]
       .unique
 }

@@ -14,6 +14,10 @@ object FlywayTestMigration {
           pgContainer.username,
           pgContainer.password
         )
+        .locations(
+          "classpath:db/migration",
+          "classpath:db/test_migration"
+        )
         .cleanDisabled(false) // enable clean ONLY in tests
         .load()
 
